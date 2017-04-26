@@ -89,6 +89,7 @@ const store = new Vuex.Store({
     }
   },
   actions: {
+    //先判断在否在localStorage存在musics否，为空则Promise异步发送sxios请求'/api/music-data'
     getData({ commit,state }) {
       if (localStorage.musics !== '[]' && localStorage.musics) {
         state.musicData = JSON.parse(localStorage.musics);

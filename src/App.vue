@@ -50,13 +50,16 @@ export default {
     About
   },
   beforeCreate() {
-    //在dom完成之前，先获取自己的本地歌曲数据
+    //在dom完成之前，先dispatch事件getData获取自己的本地歌曲数据
     this.$store.dispatch('getData');
   },
   //mounted create 之后，$el已经完成
   mounted() {
+    //发送findDOM，存储audio dom节点，
     this.$store.commit('findDOM', {name: 'audio', dom: this.$refs.audio});
+    //监听audio的ended音乐播放结束事件，触发next()
     this.$refs.audio.addEventListener('ended', () => { this.next(); });
+    //监听audio的error加载发生错误时，触发next()
     this.$refs.audio.addEventListener('error', () => { this.next(); });
     console.log("%c Powered by Zhaohui - microzz.com","background-image:-webkit-gradient( linear, left top,right top, color-stop(0, #00a419),color-stop(0.15, #f44336), color-stop(0.29, #ff4300),color-stop(0.3, #AA00FF),color-stop(0.4, #8BC34A), color-stop(0.45, #607D8B),color-stop(0.6, #4096EE), color-stop(0.75, #D50000),color-stop(0.9, #4096EE), color-stop(1, #FF1A00));color:transparent;-webkit-background-clip:text;font-size:13px;");
   },
@@ -93,7 +96,9 @@ export default {
   },
   methods: {
     next() {
+      //判断是否只有一首歌
       this.audio.index = this.audio.index === this.musicData.length - 1 ? 0 : (++this.audio.index);
+      //播放index歌曲
       this.$store.commit('toggleMusic', this.audio.index);
     }
   }
