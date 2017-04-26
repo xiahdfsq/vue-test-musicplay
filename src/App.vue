@@ -50,8 +50,10 @@ export default {
     About
   },
   beforeCreate() {
+    //在dom完成之前，先获取自己的本地歌曲数据
     this.$store.dispatch('getData');
   },
+  //mounted create 之后，$el已经完成
   mounted() {
     this.$store.commit('findDOM', {name: 'audio', dom: this.$refs.audio});
     this.$refs.audio.addEventListener('ended', () => { this.next(); });
